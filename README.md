@@ -176,6 +176,41 @@ Get trending news articles by category.
 Get top 10 technology headlines in the US
 ```
 
+## Email Server
+
+An additional MCP server has been added that can draft a dummy email based on
+news data returned by the GNews tools. It does **not** send any real email; it
+simply returns a JSON structure describing the draft message. This tool is
+intended to be chained after `search` or `get_top_headlines` when used from an
+MCP client or inspector.
+
+### Tool: `draft_email`
+
+**Parameters:**
+
+- `news` (required): The search result object produced by the GNews tools. It
+  should follow the same `SearchResult` schema used by `search`/`get_top_headlines`.
+- `to` (optional): Recipient email address (defaults to `user@example.com`).
+- `cc` (optional): List of CC addresses.
+- `bcc` (optional): List of BCC addresses.
+
+**Returns:**
+
+A JSON object with fields `to`, `subject`, `body`, `cc`, and `bcc` outlining a
+simple draft message.
+
+**Example:**
+
+```python
+# first call the news server
+result = await gnews.search(q="Python 4 release", max_articles=5)
+# then draft an email from the returned articles
+email = await email_server.draft_email(news=result, to="team@example.com")
+print(email)
+```
+
+---
+
 ## Example Queries
 
 ### Search Examples

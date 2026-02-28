@@ -34,23 +34,38 @@ def test_server_structure():
     """Test if the server has the required tools"""
     try:
         # This will fail if imports fail, but let's check the structure
-        import main
+        import gnews_mpc
         
         # Check if the server has the required tools
-        if hasattr(main, 'search'):
+        if hasattr(gnews_mpc, 'search'):
             print("✓ 'search' tool found")
         else:
             print("✗ 'search' tool not found")
             
-        if hasattr(main, 'get_top_headlines'):
+        if hasattr(gnews_mpc, 'get_top_headlines'):
             print("✓ 'get_top_headlines' tool found")
         else:
             print("✗ 'get_top_headlines' tool not found")
             
-        if hasattr(main, 'mcp'):
+        if hasattr(gnews_mpc, 'mcp'):
             print("✓ FastMCP instance found")
         else:
             print("✗ FastMCP instance not found")
+
+        # email server should exist in workspace
+        try:
+            import email_mcp
+            if hasattr(email_mcp, 'draft_email'):
+                print("✓ 'draft_email' tool found in email_mcp")
+            else:
+                print("✗ 'draft_email' tool not found in email_mcp")
+            if hasattr(email_mcp, 'mcp'):
+                print("✓ Email FastMCP instance found")
+            else:
+                print("✗ Email FastMCP instance not found")
+        except ImportError:
+            print("✗ Could not import email_mcp module")
+            return False
             
         return True
     except Exception as e:
